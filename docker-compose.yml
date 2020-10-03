@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  php:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: inium/php:5.3-apache
+    container_name: simple-php-router
+    hostname: simple-php-router
+    volumes:
+      - .:/var/www/html
+    ports:
+      - 18080:80
+    network_mode: bridge
