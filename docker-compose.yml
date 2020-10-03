@@ -6,8 +6,8 @@ services:
       context: .
       dockerfile: Dockerfile
     image: inium/php:5.3-apache
-    container_name: simple-php-router
-    hostname: simple-php-router
+    container_name: tinypast
+    hostname: tinypast
     volumes:
       - .:/var/www/html
     ports:
