@@ -9,7 +9,7 @@
     </routes>
     <!-- Error 발생 시 처리할 Handler 정보 -->
     <errors>
-        <error code="404" name="Not Found" controller="App\Controllers\ErrorController::notFound" />
-        <error code="405" name="Method Not Allowed" controller="App\Controllers\ErrorController::methodNotAllowed" />
+        <error code="404" name="Not Found" controller="App\Controllers\ErrorController@notFound" />
+        <error code="405" name="Method Not Allowed" controller="App\Controllers\ErrorController@methodNotAllowed" />
     </errors>
 </document>
