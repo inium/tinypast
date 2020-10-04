@@ -15,14 +15,16 @@ class DotEnv
      */
     public static function load($path = '.env')
     {
-        $fp = fopen($path, "r");
+        if (file_exists($path)) {
+            $fp = fopen($path, "r");
 
-        while (!feof($fp)) {
-            $str = trim(fgets($fp));
+            while (!feof($fp)) {
+                $str = trim(fgets($fp));
 
-            if (strlen($str) > 0) {
-                if ($str[0] != '#') {
-                    putenv(trim($str));
+                if (strlen($str) > 0) {
+                    if ($str[0] != '#') {
+                        putenv(trim($str));
+                    }
                 }
             }
         }
