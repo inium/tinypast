@@ -1,0 +1,7 @@
+<route method="GET" url="/users" controller="App\Controllers\UserController@index" />
+<route method="GET" url="/users/create" controller="App\Controllers\UserController@create" />
+<route method="POST" url="/users" controller="App\Controllers\UserController@store" />
+<route method="GET" url="/users/:userId" controller="App\Controllers\UserController@show" />
+<route method="GET" url="/users/:userId/edit" controller="App\Controllers\UserController@edit" />
+<route method="PUT" url="/users/:userId" controller="App\Controllers\UserController@update" />
+<route method="DELETE" url="/users/:userId" controller="App\Controllers\UserController@delete" />
