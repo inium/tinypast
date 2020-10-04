@@ -9,7 +9,7 @@ class ErrorController extends BaseController
     /**
      * 404 Not found
      */
-    public function notFound()
+    public function notFound($request)
     {
         return '404 Not Found';
     }
@@ -17,7 +17,7 @@ class ErrorController extends BaseController
     /**
      * 405 Method not allowed
      */
-    public function methodNotAllowed()
+    public function methodNotAllowed($request)
     {
         return '405 Method Not Allowed';
     }
