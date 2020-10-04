@@ -67,11 +67,13 @@ class UserController extends BaseController
      */
     public function store($request)
     {
+        $req = $this->sanitizeRequest($request);
+
         $params = array(
-            'name' => $request['user_name'],
-            'email' => $request['user_email'],
-            'phone' => $request['user_phone'],
-            'memo' => $request['user_memo'],
+            'name' => $req['user_name'],
+            'email' => $req['user_email'],
+            'phone' => $req['user_phone'],
+            'memo' => $req['user_memo'],
             'created_at' => date('Y-m-d H:i:s')
         );
 
@@ -103,11 +105,13 @@ class UserController extends BaseController
      */
     public function update($request, $userId)
     {
+        $req = $this->sanitizeRequest($request);
+
         $params = array(
-            'name' => $request['user_name'],
-            'email' => $request['user_email'],
-            'phone' => $request['user_phone'],
-            'memo' => $request['user_memo']
+            'name' => $req['user_name'],
+            'email' => $req['user_email'],
+            'phone' => $req['user_phone'],
+            'memo' => $req['user_memo']
         );
 
         $rows = $this->model->update($params, $userId);
