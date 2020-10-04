@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+    <!-- Route 정보 -->
+    <routes baseUrl="/">
+        <web>
+            <route method="GET" url="/" controller="App\Controllers\HomeController@index" />
+            <route method="GET" url="/info.html" controller="App\Controllers\HomeController@info" />
+        </web>
+    </routes>
+    <!-- Error 발생 시 처리할 Handler 정보 -->
+    <errors>
+        <error code="404" name="Not Found" controller="App\Controllers\ErrorController@notFound" />
+        <error code="405" name="Method Not Allowed" controller="App\Controllers\ErrorController@methodNotAllowed" />
+    </errors>
+</document>
