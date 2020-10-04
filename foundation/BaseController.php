@@ -28,7 +28,7 @@ abstract class BaseController
 
         ob_end_clean();
 
-        return $this->sanitize($content);
+        return $this->sanitizeView($content);
     }
 
     /**
@@ -49,7 +49,7 @@ abstract class BaseController
      * @return string       Sanitized HTML
      * @see https://stackoverflow.com/questions/6225351/how-to-minify-php-page-html-output
      */
-    private function sanitize($str)
+    private function sanitizeView($str)
     {
         $search = array(
             '/\>[^\S]+/s', // strip whitespaces after tags, except space
@@ -63,5 +63,31 @@ abstract class BaseController
         $buffer = preg_replace($search, $replace, $str);
 
         return $buffer;
+    }
+
+    /**
+     * XSS 공격 방지를 위해 sanitize 한다.
+     *
+     * @param string $str   Sanitize대상 string
+     * @return string       XSS Filtered string
+     */
+    protected function sanitizeStr($str)
+    {
+        return htmlspecialchars(strip_tags($str));
+    }
+
+    /**
+     * XSS 공격 방지를 위해 배열 요소들을 Sanitize한 결과를 반환한다.
+     *
+     * @param array $array  Sanitize 대상이 저장된 array
+     * @return array        XSS Filtered array
+     */
+    protected function sanitizeRequest($array)
+    {
+        $ret = array_walk_recursive($array, function (&$input) {
+            $input = htmlspecialchars(strip_tags($input));
+        });
+
+        return $array;
     }
 }
