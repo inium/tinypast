@@ -134,9 +134,9 @@ class Route
         if (!$routeMatchFound) {
             // But a matching path exists
             if ($pathMatchFound) {
-                self::handleMethodNotAllowed();
+                echo self::handleMethodNotAllowed($_REQUEST);
             } else {
-                self::handleNotFound();
+                echo self::handleNotFound($_REQUEST);
             }
         }
     }
@@ -177,28 +177,31 @@ class Route
 
     /**
      * URL path가 없을 경우 예외처리 한다.
+     *
+     * @param array $request    $_REQUEST
      */
-    private static function handleNotFound()
+    private static function handleNotFound($request)
     {
         header("HTTP/1.0 404 Not Found");
 
         if (self::$notFound) {
-            echo call_user_func_array(self::$notFound, array($path));
+            return self::callCallback(self::$notFound, array($_REQUEST));
         }
     }
 
     /**
      * URL Path는 존재하나 등록된 Method(GET, POST 등)가
      * 일치하지 않을 경우 예외처리 한다.
+     *
+     * @param array $request    $_REQUEST
      */
-    private static function handleMethodNotAllowed()
+    private static function handleMethodNotAllowed($request)
     {
         header("HTTP/1.0 405 Method Not Allowed");
 
         if (self::$methodNotAllowed) {
-            echo call_user_func_array(self::$methodNotAllowed, array(
-                $path,
-                $method
+            return self::callCallback(self::$methodNotAllowed, array(
+                $_REQUEST
             ));
         }
     }
