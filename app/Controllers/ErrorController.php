@@ -8,6 +8,8 @@ class ErrorController extends BaseController
 {
     /**
      * 404 Not found
+     *
+     * @param $request      $_REQUEST
      */
     public function notFound($request)
     {
@@ -16,6 +18,8 @@ class ErrorController extends BaseController
 
     /**
      * 405 Method not allowed
+     *
+     * @param $request      $_REQUEST
      */
     public function methodNotAllowed($request)
     {
