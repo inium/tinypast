@@ -2,16 +2,18 @@
 <document>
     <!-- Route 정보 -->
     <routes baseUrl="/">
-        <route method="GET" url="/" controller="App\Controllers\HomeController@index" />
-        <route method="GET" url="/info.html" controller="App\Controllers\HomeController@info" />
+        <web>
+            <route method="GET" url="/" controller="App\Controllers\HomeController@index" />
+            <route method="GET" url="/info.html" controller="App\Controllers\HomeController@info" />
 
-        <route method="GET" url="/users" controller="App\Controllers\UserController@index" />
-        <route method="GET" url="/users/create" controller="App\Controllers\UserController@create" />
-        <route method="POST" url="/users" controller="App\Controllers\UserController@store" />
-        <route method="GET" url="/users/:userId" controller="App\Controllers\UserController@show" />
-        <route method="GET" url="/users/:userId/edit" controller="App\Controllers\UserController@edit" />
-        <route method="PUT" url="/users/:userId" controller="App\Controllers\UserController@update" />
-        <route method="DELETE" url="/users/:userId" controller="App\Controllers\UserController@delete" />
+            <route method="GET" url="/users" controller="App\Controllers\UserController@index" />
+            <route method="GET" url="/users/create" controller="App\Controllers\UserController@create" />
+            <route method="POST" url="/users" controller="App\Controllers\UserController@store" />
+            <route method="GET" url="/users/:userId" controller="App\Controllers\UserController@show" />
+            <route method="GET" url="/users/:userId/edit" controller="App\Controllers\UserController@edit" />
+            <route method="PUT" url="/users/:userId" controller="App\Controllers\UserController@update" />
+            <route method="DELETE" url="/users/:userId" controller="App\Controllers\UserController@delete" />
+        </web>
     </routes>
     <!-- Error 발생 시 처리할 Handler 정보 -->
     <errors>

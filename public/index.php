@@ -13,8 +13,8 @@ date_default_timezone_set(Foundation\DotEnv::get('DEFAUT_TIMEZONE', 'UTC'));
 // XML로부터 route 정보를 Load하여 등록한다.
 $xml = simplexml_load_file(__DIR__ . '/../routes.xml');
 
-// route 설정
-foreach ($xml->routes->children() as $route) {
+// web route 설정
+foreach ($xml->routes->web->children() as $route) {
     $attr = $route->attributes();
     Route::add(
         (string) $attr->url,
