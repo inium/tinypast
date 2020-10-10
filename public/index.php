@@ -1,6 +1,11 @@
 <?php
 
-require_once __DIR__ . '/../autoload.php';
+require_once __DIR__ . '/../tinypast/Psr4Autoloader.php';
+
+$loader = new \Tinypast\Psr4Autoloader();
+$loader->register();
+$loader->addNamespace('Foundation', '../tinypast/foundation');
+$loader->addNamespace('App', '../app');
 
 use Foundation\Route;
 
@@ -8,7 +13,9 @@ use Foundation\Route;
 Foundation\Config\DotEnv::load(__DIR__ . '/../.env');
 
 // Set default timezone
-date_default_timezone_set(Foundation\DotEnv::get('DEFAUT_TIMEZONE', 'UTC'));
+date_default_timezone_set(
+    Foundation\Config\DotEnv::get('DEFAUT_TIMEZONE', 'UTC')
+);
 
 // XML로부터 route 정보를 Load하여 등록한다.
 $xml = simplexml_load_file(__DIR__ . '/../routes.xml');
