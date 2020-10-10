@@ -5,9 +5,9 @@
  * @author inlee <einable@gmail.com>
  */
 
-namespace Foundation;
+namespace Foundation\Base;
 
-class BaseModel
+class Model
 {
     /**
      * Database Instance
