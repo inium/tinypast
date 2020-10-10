@@ -5,7 +5,7 @@ require_once __DIR__ . '/../autoload.php';
 use Foundation\Route;
 
 // .env Load
-Foundation\DotEnv::load(__DIR__ . '/../.env');
+Foundation\Config\DotEnv::load(__DIR__ . '/../.env');
 
 // Set default timezone
 date_default_timezone_set(Foundation\DotEnv::get('DEFAUT_TIMEZONE', 'UTC'));
