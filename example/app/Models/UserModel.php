@@ -6,7 +6,7 @@
  */
 namespace App\Models;
 
-use Foundation\BaseModel;
+use Foundation\Base\Model as BaseModel;
 
 class UserModel extends BaseModel
 {

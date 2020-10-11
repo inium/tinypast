@@ -1,21 +1,29 @@
 <?php
 
-require_once __DIR__ . '/../autoload.php';
+require_once __DIR__ . '/../tinypast/Autoloader.php';
 
+$loader = new \Tinypast\Autoloader();
+$loader->register();
+$loader->addNamespace('Foundation', '../tinypast/Foundation');
+$loader->addNamespace('App', '../app');
+
+// use Foundation\Route;
+use Foundation\Config\DotEnv;
 use Foundation\Route;
 
 // .env Load
-Foundation\DotEnv::load(__DIR__ . '/../.env');
+DotEnv::load(__DIR__ . '/../.env');
 
 // Set default timezone
-date_default_timezone_set(Foundation\DotEnv::get('DEFAUT_TIMEZONE', 'UTC'));
+date_default_timezone_set(DotEnv::get('DEFAUT_TIMEZONE', 'UTC'));
 
 // XML로부터 route 정보를 Load하여 등록한다.
-$xml = simplexml_load_file(__DIR__ . '/../routes.xml');
+$xml = simplexml_load_file(__DIR__ . '/../config/routes.xml');
 
 // web route 설정
 foreach ($xml->routes->web->children() as $route) {
     $attr = $route->attributes();
+
     Route::add(
         (string) $attr->url,
         (string) $attr->controller,
@@ -24,7 +32,7 @@ foreach ($xml->routes->web->children() as $route) {
 }
 
 // error handler 설정
-foreach ($xml->errors->children() as $error) {
+foreach ($xml->errors->web->children() as $error) {
     $attr = $error->attributes();
     switch ((int) $attr->code) {
         // 404 Not found

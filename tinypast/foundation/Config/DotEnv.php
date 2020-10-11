@@ -4,7 +4,7 @@
  *
  * @author inlee <einable@gmail.com>
  */
-namespace Foundation;
+namespace Foundation\Config;
 
 class DotEnv
 {

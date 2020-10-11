@@ -5,9 +5,9 @@
  * @author inlee <einable@gmail.com>
  */
 
-namespace Foundation;
+namespace Foundation\Base;
 
-class BaseModel
+class Model
 {
     /**
      * Database Instance
@@ -58,9 +58,9 @@ class BaseModel
     public function findById($id)
     {
         $tableName = $this->tableName();
-        $query = "SELECT * FROM {$tableName} WHERE id = ?";
+        $query = "SELECT * FROM {$tableName} WHERE id = :id";
 
-        $stmt = $this->database->query($query, array($id));
+        $stmt = $this->database->query($query, array('id' => $id));
 
         return $stmt->fetch();
     }
@@ -68,28 +68,24 @@ class BaseModel
     /**
      * 데이터를 추가한다.
      *
-     * @param array $param  Insert 파라미터. 반드시 array는 key => value로 구성.
+     * @param array $params Insert 파라미터. 반드시 array는 key => value로 구성.
      * @return integer      마지막에 삽입된 ID
      */
-    public function insert($param)
+    public function insert($params)
     {
         // Split array keys and values
-        $keys = array_keys($param);
-        $values = array_values($param);
-
-        $insertColumns = implode(', ', $keys);
-        $valueQuestions = implode(
+        $columns = implode(', ', array_keys($params));
+        $values = implode(
             ', ',
-            array_map(function ($value) {
-                return '?';
-            }, $values)
+            array_walk($params, function ($v, $k) {
+                return ":{$k}";
+            })
         );
 
         $tableName = $this->tableName();
-        $query = "INSERT INTO {$tableName} ({$insertColumns})
-                         VALUES ({$valueQuestions})";
+        $query = "INSERT INTO {$tableName} ({$columns}) VALUES ({$values})";
 
-        $stmt = $this->database->query($query, $values);
+        $stmt = $this->database->query($query, $param);
 
         return $this->database->pdo()->lastInsertId();
     }
@@ -102,30 +98,26 @@ class BaseModel
      *
      * $object->update($param, $id);
      * -------------------------------------------------------------------------
-     * @param array $param  Update 파라미터. 반드시 array는 key => value로 구성.
+     * @param array $params Update 파라미터. 반드시 array는 key => value로 구성.
      * @param integer $id   Update 대상 id
      * @return void
      */
-    public function update($param, $id)
+    public function update($params, $id)
     {
-        // Split array key and value
-        $keys = array_keys($param);
-        $values = array_values($param);
-
         $setClause = implode(
             ', ',
-            array_map(function ($key) {
-                return "{$key} = ?";
-            }, $keys)
+            array_walk($params, function ($v, $k) {
+                return "{$k} = :{$k}";
+            })
         );
 
         // Query 생성
         $tableName = $this->tableName();
-        $query = "UPDATE {$tableName} SET {$setClause} WHERE id = ?";
+        $query = "UPDATE {$tableName} SET {$setClause} WHERE id = :id";
 
         // id 추가
-        array_push($values, $id);
-        $stmt = $this->database->query($query, $values);
+        $params['id'] = $id;
+        $stmt = $this->database->query($query, $params);
 
         return $stmt->rowCount();
     }
@@ -139,9 +131,9 @@ class BaseModel
     public function deleteById($id)
     {
         $tableName = $this->tableName();
-        $query = "DELETE FROM {$tableName} WHERE id = ?";
+        $query = "DELETE FROM {$tableName} WHERE id = :id";
 
-        $stmt = $this->database->query($query, array($id));
+        $stmt = $this->database->query($query, array('id' => $id));
 
         return $stmt->rowCount();
     }

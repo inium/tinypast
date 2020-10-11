@@ -6,7 +6,7 @@
  */
 namespace App\Controllers;
 
-use Foundation\BaseController;
+use Foundation\Base\Controller as BaseController;
 use App\Models\UserModel;
 
 class UserController extends BaseController

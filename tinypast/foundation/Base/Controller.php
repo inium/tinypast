@@ -5,9 +5,9 @@
  * @author inlee <einable@gmail.com>
  */
 
-namespace Foundation;
+namespace Foundation\Base;
 
-abstract class BaseController
+abstract class Controller
 {
     /**
      * Render files with parameters

@@ -7,7 +7,7 @@
 
 namespace App\Controllers;
 
-use Foundation\BaseController;
+use Foundation\Base\Controller as BaseController;
 
 class HomeController extends BaseController
 {
