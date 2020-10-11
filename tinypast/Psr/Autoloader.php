@@ -1,5 +1,5 @@
 <?php
-namespace Tinypast;
+namespace Tinypast\Psr;
 
 /**
  * An example of a general-purpose implementation that includes the optional
@@ -45,7 +45,7 @@ namespace Tinypast;
  *      <?php
  *      new \Foo\Bar\Qux\QuuxTest;
  */
-class Psr4Autoloader
+class Autoloader
 {
     /**
      * An associative array where the key is a namespace prefix and the value
