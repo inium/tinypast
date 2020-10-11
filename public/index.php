@@ -18,7 +18,7 @@ DotEnv::load(__DIR__ . '/../.env');
 date_default_timezone_set(DotEnv::get('DEFAUT_TIMEZONE', 'UTC'));
 
 // XML로부터 route 정보를 Load하여 등록한다.
-$xml = simplexml_load_file(__DIR__ . '/../config/routes.xml');
+$xml = simplexml_load_file(__DIR__ . '/../routes.xml');
 
 // web route 설정
 foreach ($xml->routes->web->children() as $route) {

@@ -1,21 +1,21 @@
 # tinypast
 
-Legacy PHP (5.3.x 이상) 에서 사용하기 위해 Apache2 환경에서 동작하는 만든 매우 간단한 Framework 입니다.
+Legacy PHP 에서(5.3.29 이상) 사용하기 위해 Apache2 환경에서 동작하는 만든 매우 간단한 Framework 입니다.
 
 A very simple PHP framework for legacy environments on Apache2.
 
 
 ## 개요
 
-Legacy PHP (5.3.x) 에서 구조적인 개발을 하기 위해 제작한 Apache2 환경에서 동작하는 매우 간단한 Framework 입니다.
+Legacy PHP (5.3.29 이상) 에서 구조적인 개발을 하기 위해 제작한 매우 간단한 Framework 입니다.
 
-대부분의 PHP Framework들이 Modern PHP를 위해 PHP 표준 권고안(PSR)을 따라 제작되고 있으며 [PHP에서 지원하는](https://www.php.net/supported-versions.php) 7.2 버전부터 공식적으로 지원하고 있습니다(글 작성 시점 기준). 그러나 현재 PHP로 제작되어 운영되는 사이트들 일부는 Framework 없이 개발되었으며 관리가 되지 않아 유지보수 및 추가 개발에 어려움이 있습니다. 또한 이 시점에서 사용된 PHP는 5.x 버전대가 대부분이며 이는 현재 Legacy가 되어 보안이슈, 최신 언어 기능 미지원 등으로 더 이상 사용이 권고되지 않습니다.
+대부분의 PHP Framework들이 Modern PHP를 위해 PHP 표준 권고안(PSR)을 따라 제작되고 있으며 [PHP에서 지원하는](https://www.php.net/supported-versions.php) 7.2 버전부터 공식적으로 지원하고 있습니다(글 작성 시점 기준). 그러나 현재 PHP로 제작되어 운영되는 사이트 일부는 Framework 없이 개발되었으며 관리가 되지 않아 유지보수 및 추가 개발에 어려움이 있습니다. 또한 이 시점에서 사용된 PHP는 5.x 버전대가 대부분이며 이는 현재 Legacy가 되어 보안이슈, 최신 언어 기능 미지원 등으로 더 이상 사용이 권고되지 않습니다.
 
 가장 쉬운 해결 방법은 PHP 7 이상으로 `Laravel`과 같은 Framework를 도입해 새로 개발하는 것이나 이는 많은 시간과 비용을 필요로 합니다. 이와 별도로 PHP 버전을 업그레이드 하는 것은 소스코드에 사용된 현재 Deprecated된 Feature 들로 인해 Side effect가 발생할 가능성이 매우 높기 때문에 매우 신중히 결정 후 진행해야 합니다.
 
 그렇다면 가장 현실적인 방법으로는 기존 PHP 버전을 유지한 채 유지보수 과정에서 MVC 도입 혹은 유사하게 구현해 나가야 하며 특정 사이트 혹은 페이지들, 디렉터리에 Framework를 도입해 개발을 하며 조금씩 바꾸어 나가는 방법일 것입니다.
 
-본 프로젝트는 이러한 방법에 사용하기 위해 구현된 매우 간단한 Framework 이며 나름 최신인 Feature를 적용하였습니다. Legacy PHP인 5.3.x 이상에서 동작할 수 있도록 Route Pattern을 도입하였습니다. `composer` 없는 환경을 고려하여 `composer` 없이 본 프로젝트를 다운로드 받아 사용할 수 있도록 구현하였습니다.
+본 프로젝트는 이러한 방법에 사용하기 위해 구현된 매우 간단한 Framework 입니다. Legacy PHP인 5.3.x 이상에서 동작할 수 있도록 Route Pattern을 도입하였습니다. `composer` 없는 환경을 고려하여 `composer` 없이 본 프로젝트를 다운로드 받아 사용할 수 있도록 구현하였습니다.
 
 본 프로젝트는 Apache2 환경에서 구현 및 테스트가 이루어졌으며 자세한 내용은 아래와 같습니다.
 
@@ -25,7 +25,7 @@ Legacy PHP (5.3.x) 에서 구조적인 개발을 하기 위해 제작한 Apache2
 
 본 Framework는 아래의 서버 요구사항을 만족해야 합니다.
 
-- php 5.3.x or upper
+- php 5.3.29 or upper
 - apache2 mod_rewrite on
 - SimpleXML
 
@@ -52,12 +52,14 @@ docker-compose 명령어는 docker 공식 `php:5.3-apache`를 이용한 후 mod_
     - Controllers : Controller 저장 디렉터리
     - Models: Model 저장 디렉터리 (Optional).
   - example: 사용자(Users) 정보 단순 CRUD 구현 Model, View, Controller 저장
-  - foundation: Framework Core Module
-  - public: Framework 실행 파일(index.php), CSS, JavaScript 저장
+  - tinypast
+    - foundation: Framework Core Module
+    - vendor: 외부 모듈(password_compact, AES 등)
+    - Autoloader.php: namespace autoload (require) 실행
+  - public: Framework 실행 파일(index.php), CSS, JavaScript, font, image 등 저장
   - resources
     - views: View 파일 저장
   - .env.example: .env 템플릿 파일
-  - autoload.php: namespace autoload (require) 실행
   - docker-compose.yml: Docker 실행환경 저장
   - Dockerfile: Docker 이미지
   - routes.xml: Route 저장 xml
@@ -310,13 +312,29 @@ class ErrorController extends BaseController
 }
 ```
 
+### Crypto
+
+bcrypt, AES를 적용하였습니다. 
+
+#### bcrypt
+
+PHP 5.3.x 버전에서는 password_hash, password_verify 함수를 지원하지 않기 때문에 아래의 모듈을 이용해  해당 함수가 없을 경우 모듈에 구현된 함수를 사용하도록 하였습니다.
+
+- https://github.com/ircmaxell/password_compat 
+
+#### AES
+
+openssl 혹은 mcrypt 계열(최신 버전에서 deprecated)를 사용해서 구현하는 것이 일반적이나 둘 다 없을 경우를 대비해 아래의 순수 AES 구현 모듈을 적용하였습니다.
+
+- https://github.com/phillipsdata/phpaes/blob/master/src/Aes.php
+
 ## Security
 
 본 Framework에 구현되었고 예정인 보안 관련된 사항입니다.
 
 #### SQL Injection
 
-PDO의 Prepared Statement를 사용해 Query를 자동으로 이스케이핑 하였습니다.
+PDO의 Prepared Statement를 사용했습니다.
 
 #### XSS
 
@@ -324,7 +342,7 @@ PDO의 Prepared Statement를 사용해 Query를 자동으로 이스케이핑 하
 
 #### CSRF
 
-추후 구현 예정입니다.
+해당 기능은 세션과 같이 구현되어야 하기 때문에 세션 구현과 같이 구현할 예정입니다.
 
 #### 기타
 
@@ -344,12 +362,6 @@ PDO의 Prepared Statement를 사용해 Query를 자동으로 이스케이핑 하
 
 ## Future Works
 
-### Password
-
-php 5.3.x에서 bcrypt 암호화를 위해 사용하는 password_hash 함수를 지원하지 않기 때문에 아래 링크의 모듈을 사용해 구현할 예정입니다.
-
--  https://github.com/ircmaxell/password_compat
-
 ### CSRF
 
 CSRF 구현은 Session이 필요하며 token 값 생성 과정 구현을 필요로 합니다. php 5.3.x 버전에서 랜덤한 token 사용에 mcrypt, openssl 은 별도의 플러그인이 필요하기 때문에 이를 포함해 UUID 등을 이용한 방법을 검토한 후 구현을 진행할 예정입니다.
@@ -357,12 +369,6 @@ CSRF 구현은 Session이 필요하며 token 값 생성 과정 구현을 필요�
 - UUID: https://www.php.net/manual/en/function.uniqid.php#94959
 - Token 생성: https://stackoverflow.com/questions/6287903/how-to-properly-add-cross-site-request-forgery-csrf-token-using-php
 - Token 비교: https://github.com/indigophp/hash-compat
-
-### AES
-
-mcrypt 계열 함수들이 deprecated 되면서 openssl 계열 함수를 사용해야 하며 별도의 openssl 플러그인을 설치해야 하기 때문에 아래 링크와 같이 순수 AES 구현을 적용하거나 mcrypt, openssl 플러그인을 설치해 사용하는 방법 등을 검토한 후 진행할 예정입니다.
-
-- https://github.com/phillipsdata/phpaes/blob/master/src/Aes.php
 
 ### Session
 
