@@ -104,8 +104,10 @@ class Database
     /**
      * 질의한 결과를 반환한다.
      * -------------------------------------------------------------------------
-     * $query = "SELECT * FROM fruit WHERE calories < ? AND colour = ?";
-     * $param = array(150, 'red');
+     * $query = "SELECT *
+     *           FROM fruit
+     *           WHERE calories < :calories AND colour = :colour";
+     * $param = array('calories' => 150, 'colour' => 'red');
      *
      * $object->query($query, $param);
      * -------------------------------------------------------------------------
@@ -117,7 +119,11 @@ class Database
     {
         try {
             $stmt = $this->pdo->prepare($query);
-            $stmt->execute($param);
+            foreach ($param as $key => $value) {
+                $stmt->bindParam(":{$key}", $value);
+            }
+
+            $stmt->execute();
 
             return $stmt; // return $stmt->fetchAll();
         } catch (\PDOException $e) {
