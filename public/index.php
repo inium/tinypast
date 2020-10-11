@@ -32,7 +32,7 @@ foreach ($xml->routes->web->children() as $route) {
 }
 
 // error handler 설정
-foreach ($xml->errors->children() as $error) {
+foreach ($xml->errors->web->children() as $error) {
     $attr = $error->attributes();
     switch ((int) $attr->code) {
         // 404 Not found
