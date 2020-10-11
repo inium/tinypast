@@ -1,14 +1,15 @@
 <?php
 
-require_once __DIR__ . '/../tinypast/Psr/Autoloader.php';
+require_once __DIR__ . '/../tinypast/Autoloader.php';
 
-$loader = new \Tinypast\Psr\Autoloader();
+$loader = new \Tinypast\Autoloader();
 $loader->register();
 $loader->addNamespace('Foundation', '../tinypast/Foundation');
 $loader->addNamespace('App', '../app');
 
-use Foundation\Route;
+// use Foundation\Route;
 use Foundation\Config\DotEnv;
+use Foundation\Route;
 
 // .env Load
 DotEnv::load(__DIR__ . '/../.env');

@@ -1,5 +1,5 @@
 <?php
-namespace Tinypast\Psr;
+namespace Tinypast;
 
 /**
  * An example of a general-purpose implementation that includes the optional
