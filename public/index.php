@@ -1,28 +1,28 @@
 <?php
 
-require_once __DIR__ . '/../tinypast/Psr4Autoloader.php';
+require_once __DIR__ . '/../tinypast/Psr/Autoloader.php';
 
-$loader = new \Tinypast\Psr4Autoloader();
+$loader = new \Tinypast\Psr\Autoloader();
 $loader->register();
-$loader->addNamespace('Foundation', '../tinypast/foundation');
+$loader->addNamespace('Foundation', '../tinypast/Foundation');
 $loader->addNamespace('App', '../app');
 
 use Foundation\Route;
+use Foundation\Config\DotEnv;
 
 // .env Load
-Foundation\Config\DotEnv::load(__DIR__ . '/../.env');
+DotEnv::load(__DIR__ . '/../.env');
 
 // Set default timezone
-date_default_timezone_set(
-    Foundation\Config\DotEnv::get('DEFAUT_TIMEZONE', 'UTC')
-);
+date_default_timezone_set(DotEnv::get('DEFAUT_TIMEZONE', 'UTC'));
 
 // XML로부터 route 정보를 Load하여 등록한다.
-$xml = simplexml_load_file(__DIR__ . '/../routes.xml');
+$xml = simplexml_load_file(__DIR__ . '/../config/routes.xml');
 
 // web route 설정
 foreach ($xml->routes->web->children() as $route) {
     $attr = $route->attributes();
+
     Route::add(
         (string) $attr->url,
         (string) $attr->controller,
